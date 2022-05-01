@@ -29,12 +29,15 @@ std::unique_ptr<TMultiGraph> createGraph(std::vector<std::string> files) {
 	int i = 2;
 
 	for (const auto& file : files) {
-		auto graph = std::make_unique<TGraph>(file.c_str(), "%lg %lg");
+		// this is only safe in terms of memory because according to the definition of
+		// TMultiGraph it owns the graphs so there should be no need to manage this
+		// resource, since when TMultiGraph is delete, so will it's underlying graphs
+		TGraph *graph = new TGraph(file.c_str(), "%lg %lg");
 		graph->SetTitle(("Function graph define by data file " + file).c_str());
 		graph->SetLineWidth(3);
 		graph->SetMarkerStyle(i);
 		graph->SetMarkerSize(1);
-		mg->Add(graph.get(), "PL");
+		mg->Add(graph, "PL");
 
 		i += 2;
 	}
@@ -42,10 +45,9 @@ std::unique_ptr<TMultiGraph> createGraph(std::vector<std::string> files) {
 	return mg;
 }
 
-//TODO: make multicolred graphs to distinguish them, and maybe labels
 int main(int argc, char **argv) {
 	TApplication app("app", &argc, argv);
-	auto c = std::make_unique<TCanvas>("c", "Something", 0, 0, 800, 600);
+	TCanvas *c = new TCanvas("c", "Something", 0, 0, 800, 600);
 
 	std::vector<std::string> files = getGraphFiles(app.Argc(), app.Argv());
 
