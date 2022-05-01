@@ -29,6 +29,9 @@ program main
   end do
 
   close(1)
+  close(2)
+
+  call system('bin/graph_app graph1.dat graph2.dat')
 
 end program main
 
