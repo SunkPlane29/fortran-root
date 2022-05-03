@@ -14,7 +14,7 @@ program main
 
   xmin = 0.0
   xmax = 50.0
-  nx = 100
+  nx = 50
   delx = (xmax - xmin)/dfloat(nx - 1)
 
   !.dat is a data file

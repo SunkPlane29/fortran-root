@@ -1,3 +1,14 @@
+//this application allows the user to build it's owns graphs from datasets
+//(.dat) files that can be created with fortran (and possibly other languages)
+//and basically works like gnuplot, except it is based on the ROOT framework
+//developed by CERN
+//
+//so far there is no real benefict of working with root, except learning it
+//but for more complex applications that involve more complex plots, it could
+//be a good option.
+//
+//remember: GOD is REAL (unless declared INTEGER)
+
 #include "TApplication.h"
 #include "TCanvas.h"
 #include "TGraph.h"
@@ -37,6 +48,7 @@ std::unique_ptr<TMultiGraph> createGraph(std::vector<std::string> files) {
 		graph->SetLineWidth(3);
 		graph->SetMarkerStyle(i);
 		graph->SetMarkerSize(1);
+		graph->SetEditable(kFALSE);
 		mg->Add(graph, "PL");
 
 		i += 2;
@@ -47,7 +59,7 @@ std::unique_ptr<TMultiGraph> createGraph(std::vector<std::string> files) {
 
 int main(int argc, char **argv) {
 	TApplication app("app", &argc, argv);
-	TCanvas *c = new TCanvas("c", "Something", 0, 0, 800, 600);
+	auto c = std::make_unique<TCanvas>("c", "Graph", 0, 0, 800, 600);
 
 	std::vector<std::string> files = getGraphFiles(app.Argc(), app.Argv());
 
