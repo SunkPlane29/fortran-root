@@ -1,5 +1,12 @@
 #!/bin/bash
 
+GXX=$1
+
+if [$GXX = ""]
+then
+    GXX="g++"
+fi
+
 mkdir -p bin
 
-g++ graph.cpp $(root-config --glibs --cflags --libs) -o bin/graph_app
+$GXX graph.cpp $(root-config --glibs --cflags --libs) -o bin/graph_app
